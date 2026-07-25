@@ -9,10 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestController {
 
-    @GetMapping("/rate")
-    public String test() {
+    @GetMapping("/login")
+    public String login() {
 
-        log.info("Controller test ::");
+        log.info("login Controller test ::");
+
+        return "hello";
+    }
+
+    @GetMapping("/payment")
+    public String payment() {
+
+        log.info("payment Controller test ::");
 
         return "hello";
     }

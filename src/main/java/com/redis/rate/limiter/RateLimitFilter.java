@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RateLimitFilter extends OncePerRequestFilter {
 
-    private final FixedWindowRateLimiterService limiter;
+    private final RateLimiterService rateLimiterService;
+
+    private final RateLimiterResolver limiterResolver;
 
     @Override
     protected void doFilterInternal(
@@ -28,10 +30,13 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
         System.out.println("doFilterInternal");
 
-        if (!limiter.allowRequest(user)) {
+        RateLimitType type = limiterResolver.resolve(request);
+
+        if (!rateLimiterService.allow(user, type)) {
 
             response.setStatus(429);
             response.getWriter().write("Too Many Requests");
+            System.out.println(response);
             return;
         }
 
